@@ -49,7 +49,19 @@ def test_bfs():
         graphObj.bfs(start=start_node, end=end_node_test_case_2)
     
     # test case 3: if end node and path does exist, return path
+    # find reachable nodes from start node and pick one
     reachable_nodes = list(nx.descendants(graphObj.graph, source=start_node)) + [start_node]
     end_node_test_case_3 = random.choice(reachable_nodes)
+
+    # find true path with nx
     true_path = nx.shortest_path(graphObj.graph, source=start_node, target=end_node_test_case_3)
-    assert graphObj.bfs(start=start_node, end=end_node_test_case_3) == true_path, "BFS returns wrong path!"
+    # find shortest path with bfs
+    bfs_path = graphObj.bfs(start=start_node, end=end_node_test_case_3)
+
+    # compare and assert
+    # first check if start and end nodes the same
+    assert start_node == bfs_path[0], "BFS has wrong start node!"
+    assert end_node_test_case_3 == bfs_path[-1], "BFS has wrong end node!"
+
+    # check if path lens the same (multiple shortest paths can exist!)
+    assert len(true_path) == len(bfs_path)
