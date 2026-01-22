@@ -41,14 +41,15 @@ def test_bfs():
     bfs_traversal_order = list(bfs_tree.nodes())
     
     # test case 1: if no end input, return BFS traversal
-    assert graphObj.bfs(start=start_node) == bfs_traversal_order
+    assert graphObj.bfs(start=start_node) == bfs_traversal_order, "BFS returns incorrect traversal order with no end input"
 
     # test case 2: if end node and path does not exist, return None
     end_node_test_case_2 = ''
-    assert graphObj.bfs(start=start_node, end=end_node_test_case_2) == None, "BFS must return none for path that does not exist!"
+    with pytest.raises(ValueError):
+        graphObj.bfs(start=start_node, end=end_node_test_case_2)
     
     # test case 3: if end node and path does exist, return path
-    end_node_test_case_3 = random.choice(list(graphObj.graph.nodes()))
+    reachable_nodes = nx.descendants(graphObj.graph, source=start_node)
+    end_node_test_case_3 = random.choice(reachable_nodes)
     true_path = nx.shortest_path(graphObj.graph, source=start_node, target=end_node_test_case_3)
     assert graphObj.bfs(start=start_node, end=end_node_test_case_3) == true_path, "BFS returns wrong path!"
-

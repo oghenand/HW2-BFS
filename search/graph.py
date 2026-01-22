@@ -29,6 +29,9 @@ class Graph:
         # define traversal order list (ordered list of how nodes are visited)
         traversal_order = [start]
 
+        if end is not None and end not in list(self.graph.nodes()):
+            raise ValueError("end node must be None or node in list!")
+        
         # check edge case:
         if start == end:
             return [start]
