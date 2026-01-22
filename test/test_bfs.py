@@ -50,6 +50,10 @@ def test_bfs():
     
     # test case 3: if end node and path does exist, return path
     # find reachable nodes from start node and pick one
+    # important: add [start_node] to list of reachable nodes for following reasons:
+        # 1. catch case where node has no other reachable nodes (i.e. is a sink/disconnected)
+            # in this case, only reachable node is start_node by default, so accounts for it
+        # 2. can test case of start_node == end_node (but explicity added at bottom since this does it randomly)
     reachable_nodes = list(nx.descendants(graphObj.graph, source=start_node)) + [start_node]
     end_node_test_case_3 = random.choice(reachable_nodes)
 
@@ -65,3 +69,6 @@ def test_bfs():
 
     # check if path lens the same (multiple shortest paths can exist!)
     assert len(true_path) == len(bfs_path)
+
+    # test case 4: check when start_node == end_node
+    assert graphObj.bfs(start=start_node, end=start_node) == [start_node]
