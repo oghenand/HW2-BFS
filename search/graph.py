@@ -1,4 +1,5 @@
 import networkx as nx
+from collections import deque
 
 class Graph:
     """
@@ -21,8 +22,42 @@ class Graph:
         * If there is an end node input and a path does not exist, return None
 
         """
-        return
+        # start queue
+        Q = deque([[start]])
+        # create visited set (only has start node)
+        visited = set([start])
+        # define traversal order list (ordered list of how nodes are visited)
+        traversal_order = [start]
 
+        # check edge case:
+        if start == end:
+            return [start]
+        
+        # loop through all the nodes
+        while Q:
+            # extract first edge (v), set current path, and node
+            current_path = Q.popleft()
+            N = current_path[-1]
 
+            # traverse through each neighbor of the current node
+            for neighbor in self.graph.neighbors(N):
+                # check if neighbor visited
+                # if not visited, add to visited set and traversal order
+                # also add it to current path (the shortest path candidate)
+                # if target node (end) found, return shortest path candidate
+                # ^ this is bc when BFS first visits a node, it has the shortest path to it by default
+                if neighbor not in visited:
+                    visited.add(neighbor)
+                    traversal_order.append(neighbor)
+                    shortest_path_candidate = list(current_path)
+                    shortest_path_candidate.append(neighbor)
 
+                    if end and neighbor == end:
+                        return shortest_path_candidate
+                    Q.append(shortest_path_candidate)
 
+        # If there is no end node
+        if end is None:
+            return traversal_order
+        # return none if path is not found
+        return None
