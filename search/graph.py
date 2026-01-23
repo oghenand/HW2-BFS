@@ -30,6 +30,8 @@ class Graph:
         traversal_order = [start]
 
         # edge case of if end node is not in graph
+        if not list(self.graph.nodes()):
+            raise ValueError("empty graph provided!")
         if end is not None and end not in list(self.graph.nodes()):
             raise ValueError("end node must be None or node in list!")
         # edge case where start node is not in graph
@@ -38,7 +40,6 @@ class Graph:
         # check edge of start == end:
         if start == end:
             return [start]
-        
         # loop through all the nodes
         while Q:
             # extract first edge (v), set current path, and node

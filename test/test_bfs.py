@@ -83,3 +83,8 @@ def test_bfs():
     start_node_test_case_5 = 'squidward_tentacles'
     with pytest.raises(ValueError):
         graphObj.bfs(start=start_node_test_case_5)
+
+    # test case 6: empty graph
+    start_node_test_case_5 = 'squidward_tentacles'
+    with pytest.raises(ValueError):
+        graphObj.bfs(start=start_node_test_case_5)
