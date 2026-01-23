@@ -13,13 +13,17 @@ def test_bfs_traversal():
     that all nodes are being traversed (ie. returns 
     the right number of nodes, in the right order, etc.)
     """
+    # load file and create graph object
     filename = 'data/tiny_network.adjlist'
     graphObj = Graph(filename)
+    # pick random start node
     start_node = random.choice(list(graphObj.graph.nodes()))
+    # get traversal order from bfs
     traversal_order = graphObj.bfs(start=start_node)
+    # get traversal order from networkx (true value to compare)
     bfs_tree = nx.bfs_tree(graphObj.graph, source=start_node)
     bfs_traversal_order = list(bfs_tree.nodes())
-
+    # compare bfs-code-derived to correct (should be true)
     assert traversal_order == bfs_traversal_order, "Traversal order incorrect!"
 
 def test_bfs():
@@ -33,18 +37,20 @@ def test_bfs():
     Include an additional test for nodes that are not connected 
     which should return None. 
     """
+    # load file and initialize graph object
     filename = 'data/citation_network.adjlist'
     graphObj = Graph(filename)
     start_node = random.choice(list(graphObj.graph.nodes()))
-
+    # create networkx bfs tree to get traversal order
     bfs_tree = nx.bfs_tree(graphObj.graph, source=start_node)
     bfs_traversal_order = list(bfs_tree.nodes())
     
     # test case 1: if no end input, return BFS traversal
+    # using networkx output to compare for correctness
     assert graphObj.bfs(start=start_node) == bfs_traversal_order, "BFS returns incorrect traversal order with no end input"
 
     # test case 2: if end node and path does not exist, return None
-    end_node_test_case_2 = ''
+    end_node_test_case_2 = 'patrick_star'
     with pytest.raises(ValueError):
         graphObj.bfs(start=start_node, end=end_node_test_case_2)
     
@@ -72,3 +78,8 @@ def test_bfs():
 
     # test case 4: check when start_node == end_node
     assert graphObj.bfs(start=start_node, end=start_node) == [start_node]
+
+    # test case 5: return error if start node not in graph
+    start_node_test_case_5 = 'squidward_tentacles'
+    with pytest.raises(ValueError):
+        graphObj.bfs(start=start_node_test_case_5)

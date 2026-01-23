@@ -29,10 +29,13 @@ class Graph:
         # define traversal order list (ordered list of how nodes are visited)
         traversal_order = [start]
 
+        # edge case of if end node is not in graph
         if end is not None and end not in list(self.graph.nodes()):
             raise ValueError("end node must be None or node in list!")
-        
-        # check edge case:
+        # edge case where start node is not in graph
+        if start not in list(self.graph.nodes()):
+            raise ValueError("start node must be in graph for BFS!")
+        # check edge of start == end:
         if start == end:
             return [start]
         
